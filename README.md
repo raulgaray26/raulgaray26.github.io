@@ -11,4 +11,4 @@ Esta página agrupa y documenta todos mis proyectos de código e implementacione
 ## Índice de Asignaturas
 
 ### 2026-1 - Lenguajes de Programación
-* [Ver proyectos de esta materia](https://raulgaray26.github.io/2026-1%20-%20Lenguajes%20de%20Programación/)
+* [Ver proyectos de esta materia](https://raulgaray26.github.io/2026%20-%201%20-%20Lenguajes%20de%20Programación)

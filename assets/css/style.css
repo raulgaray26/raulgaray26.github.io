@@ -2,11 +2,13 @@
 ---
 @import "{{ site.theme }}";
 
-// Colores del encabezado
-$header-bg-color: #8A1538;
-$header-bg-color-secondary: #E37A1F;
-$header-heading-color: #FFFFFF;
+// ==========================================
+// Identidad visual UEES: Granate y Naranja
+// ==========================================
 
-// Colores del contenido
-$section-headings-color: #8A1538; // Títulos de secciones en granate
-$body-link-color: #E37A1F; // Enlaces en naranja
+$header-bg-color: #8A1538; 
+$header-bg-color-secondary: #E37A1F; 
+$header-heading-color: #FFFFFF; 
+
+$section-headings-color: #8A1538; 
+$body-link-color: #E37A1F;

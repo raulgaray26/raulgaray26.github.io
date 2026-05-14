@@ -6,6 +6,8 @@
 
 Esta página agrupa y documenta todos mis proyectos de código e implementaciones realizadas durante mis años como estudiante de la UEES. 
 
+---
+
 ## Índice de Asignaturas
 
 ### 2026-1 - Lenguajes de Programación

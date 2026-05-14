@@ -1,0 +1,10 @@
+@import "{{ site.theme }}";
+
+// Colores del encabezado
+$header-bg-color: #8A1538;
+$header-bg-color-secondary: #E37A1F;
+$header-heading-color: #FFFFFF;
+
+// Colores del contenido
+$section-headings-color: #8A1538; // Títulos de secciones en granate
+$body-link-color: #E37A1F; // Enlaces en naranja

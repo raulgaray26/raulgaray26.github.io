@@ -1,10 +1,26 @@
 ---
 ---
-
-$header-bg-color: #8A1538; 
-$header-bg-color-secondary: #E37A1F; 
-$header-heading-color: #FFFFFF; 
-$section-headings-color: #8A1538; 
-$body-link-color: #E37A1F; 
-
 @import "{{ site.theme }}";
+
+.page-header {
+    background-color: #8A1538 !important;
+    background-image: linear-gradient(120deg, #8A1538, #E37A1F) !important;
+}
+
+.main-content h1, 
+.main-content h2, 
+.main-content h3, 
+.main-content h4, 
+.main-content h5, 
+.main-content h6 {
+    color: #8A1538 !important;
+}
+
+.main-content a {
+    color: #E37A1F !important;
+}
+
+.main-content a:hover {
+    color: #8A1538 !important;
+    text-decoration: underline;
+}

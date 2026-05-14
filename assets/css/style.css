@@ -1,14 +1,10 @@
 ---
 ---
-@import "{{ site.theme }}";
-
-// ==========================================
-// Identidad visual UEES: Granate y Naranja
-// ==========================================
 
 $header-bg-color: #8A1538; 
 $header-bg-color-secondary: #E37A1F; 
 $header-heading-color: #FFFFFF; 
-
 $section-headings-color: #8A1538; 
-$body-link-color: #E37A1F;
+$body-link-color: #E37A1F; 
+
+@import "{{ site.theme }}";

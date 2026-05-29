@@ -1,0 +1,2036 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Portafolio académico de Raúl Garay — Estudiante de Ingeniería en Computación en la UEES">
+    <meta name="author" content="Raúl Alejandro Garay Vinueza">
+    <meta property="og:title" content="Raúl Garay | Portafolio Académico">
+    <meta property="og:description" content="Portafolio de proyectos académicos — Ingeniería en Computación UEES">
+    <title>Raúl Garay | Portafolio Académico</title>
+
+    <!-- =====================================================================
+         FUENTES: Syne (titulares, distintiva) + DM Sans (cuerpo, limpia)
+                  + JetBrains Mono (elementos de código, estilo VSCode)
+         ===================================================================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        /* =====================================================================
+           VARIABLES GLOBALES — Paleta Apple Dark + acentos VSCode
+           Modifica aquí los colores para personalizar toda la página.
+           ===================================================================== */
+        :root {
+            /* Colores de fondo — inspirados en Apple Dark Mode */
+            --bg:              #1c1c1e;    /* Fondo base (no completamente negro) */
+            --surface:         #2c2c2e;    /* Superficie de tarjetas */
+            --surface-raised:  #3a3a3c;    /* Superficie elevada / hover */
+            --surface-glass:   rgba(44, 44, 46, 0.72);
+
+            /* Bordes sutiles */
+            --border:          rgba(255, 255, 255, 0.10);
+            --border-subtle:   rgba(255, 255, 255, 0.05);
+
+            /* Tipografía */
+            --text-primary:    #f5f5f7;   /* Blanco Apple */
+            --text-secondary:  #a8a8b0;   /* Gris medio */
+            --text-muted:      #636366;   /* Gris oscuro */
+
+            /* Acento principal — Azul Apple (dark mode) */
+            --accent:          #0a84ff;
+            --accent-soft:     rgba(10, 132, 255, 0.10);
+            --accent-glow:     rgba(10, 132, 255, 0.28);
+
+            /* Colores de estado */
+            --green:           #30d158;
+            --orange:          #ff9f0a;
+            --purple:          #bf5af2;
+            --red:             #ff453a;
+
+            /* Fuentes */
+            --font-display:    'Syne', sans-serif;
+            --font-body:       'DM Sans', sans-serif;
+            --font-mono:       'JetBrains Mono', monospace;
+
+            /* Radios y transiciones */
+            --radius:          12px;
+            --radius-lg:       20px;
+            --transition:      0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --max-width:       1100px;
+        }
+
+        /* =====================================================================
+           RESET & BASE
+           ===================================================================== */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; font-size: 16px; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-weight: 400;
+            line-height: 1.65;
+            overflow-x: hidden;
+            /* Gradientes de ambiente sutiles (orbs de luz) */
+            background-image:
+                radial-gradient(ellipse 70% 45% at 15% -5%,  rgba(10, 132, 255, 0.07) 0%, transparent 65%),
+                radial-gradient(ellipse 55% 40% at 85% 105%, rgba(191, 90, 242, 0.05) 0%, transparent 65%);
+        }
+
+        a { text-decoration: none; color: inherit; }
+        img { max-width: 100%; display: block; }
+        ::selection { background: var(--accent); color: #fff; }
+
+        /* Scrollbar personalizada estilo VSCode */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--surface-raised); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+        /* =====================================================================
+           UTILIDADES GLOBALES
+           ===================================================================== */
+        .section-tag {
+            font-family: var(--font-mono);
+            font-size: 0.73rem;
+            color: var(--accent);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: clamp(1.75rem, 4vw, 2.6rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+            line-height: 1.15;
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 540px;
+        }
+
+        /* =====================================================================
+           ANIMACIONES DE ENTRADA (Intersection Observer)
+           .reveal        → elemento individual que entra desde abajo
+           .reveal-stagger → contenedor cuyos hijos entran escalonados
+           ===================================================================== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        .reveal-stagger > * {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.55s ease, transform 0.55s ease;
+        }
+        .reveal-stagger.visible > * { opacity: 1; transform: translateY(0); }
+        .reveal-stagger.visible > *:nth-child(1) { transition-delay: 0.04s; }
+        .reveal-stagger.visible > *:nth-child(2) { transition-delay: 0.11s; }
+        .reveal-stagger.visible > *:nth-child(3) { transition-delay: 0.18s; }
+        .reveal-stagger.visible > *:nth-child(4) { transition-delay: 0.25s; }
+        .reveal-stagger.visible > *:nth-child(5) { transition-delay: 0.32s; }
+
+        /* =====================================================================
+           BARRA DE NAVEGACIÓN — Estilo Apple (frosted glass)
+           ===================================================================== */
+        nav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1000;
+            padding: 0 24px;
+            background: rgba(28, 28, 30, 0.78);
+            backdrop-filter: blur(20px) saturate(1.6);
+            -webkit-backdrop-filter: blur(20px) saturate(1.6);
+            border-bottom: 1px solid var(--border-subtle);
+            transition: border-color var(--transition);
+        }
+
+        .nav-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            height: 62px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        /* Logo: notación JSX < RG /> — referencia a VSCode / desarrollo web */
+        .nav-logo {
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 1px;
+            flex-shrink: 0;
+        }
+        .nav-logo .bracket { color: var(--accent); }
+        .nav-logo .initials { color: var(--text-primary); font-weight: 500; transition: color var(--transition); }
+        .nav-logo:hover .initials { color: var(--accent); }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+            position: relative;
+            padding-bottom: 2px;
+        }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px; left: 0; right: 0;
+            height: 1.5px;
+            background: var(--accent);
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform var(--transition);
+        }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+        .nav-links a.active { color: var(--text-primary); }
+        .nav-links a.active::after { transform: scaleX(1); }
+
+        /* Botón GitHub en la nav */
+        .nav-gh-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            transition: var(--transition);
+            cursor: pointer;
+            white-space: nowrap;
+        }
+        .nav-gh-btn:hover {
+            background: var(--surface-raised);
+            border-color: rgba(255,255,255,0.22);
+        }
+
+        /* Hamburger (solo móvil) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 6px;
+            transition: background var(--transition);
+        }
+        .hamburger:hover { background: var(--surface); }
+        .hamburger span {
+            display: block;
+            width: 22px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+        /* Menú móvil overlay */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            inset: 0;
+            top: 62px;
+            background: rgba(28, 28, 30, 0.97);
+            backdrop-filter: blur(24px);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 36px;
+            list-style: none;
+        }
+        .mobile-menu.open { display: flex; }
+        .mobile-menu a {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            transition: color var(--transition);
+        }
+        .mobile-menu a:hover { color: var(--text-primary); }
+
+        /* =====================================================================
+           HERO SECTION
+           ===================================================================== */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 110px 24px 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Patrón de puntos sutil (estilo Apple/Linear) */
+        #hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle, rgba(255,255,255,0.035) 1px, transparent 1px);
+            background-size: 38px 38px;
+            pointer-events: none;
+        }
+
+        /* Orbs de luz animados (estilo Apple WWDC) */
+        .hero-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            pointer-events: none;
+            animation: orbFloat 9s ease-in-out infinite;
+        }
+        .hero-orb-1 {
+            width: 480px; height: 480px;
+            background: radial-gradient(circle, rgba(10, 132, 255, 0.11) 0%, transparent 70%);
+            top: -80px; right: 5%;
+            animation-delay: 0s;
+        }
+        .hero-orb-2 {
+            width: 340px; height: 340px;
+            background: radial-gradient(circle, rgba(191, 90, 242, 0.07) 0%, transparent 70%);
+            bottom: 80px; left: 2%;
+            animation-delay: -4.5s;
+        }
+        .hero-orb-3 {
+            width: 220px; height: 220px;
+            background: radial-gradient(circle, rgba(48, 209, 88, 0.06) 0%, transparent 70%);
+            top: 60%; right: 30%;
+            animation-delay: -2s;
+        }
+
+        .hero-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Eyebrow — etiqueta de contexto en mono */
+        .hero-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--accent);
+            letter-spacing: 0.1em;
+            margin-bottom: 22px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            animation: fadeSlideUp 0.65s ease 0.25s forwards;
+        }
+        .hero-eyebrow::before {
+            content: '';
+            display: block;
+            width: 28px;
+            height: 1.5px;
+            background: var(--accent);
+            flex-shrink: 0;
+        }
+
+        /* Nombre principal — gran tipografía Syne con gradiente */
+        h1.hero-name {
+            font-family: var(--font-display);
+            font-size: clamp(3.2rem, 9vw, 7rem);
+            font-weight: 800;
+            line-height: 1.00;
+            margin-bottom: 22px;
+            background: linear-gradient(140deg, #f5f5f7 0%, #d8d8de 55%, #9898a8 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            opacity: 0;
+            animation: fadeSlideUp 0.65s ease 0.42s forwards;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title {
+            font-size: clamp(1rem, 2.2vw, 1.2rem);
+            color: var(--text-secondary);
+            margin-bottom: 14px;
+            font-weight: 400;
+            opacity: 0;
+            animation: fadeSlideUp 0.65s ease 0.58s forwards;
+        }
+
+        /* Tagline con efecto de escritura */
+        .hero-tagline {
+            font-family: var(--font-mono);
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 48px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeSlideUp 0.65s ease 0.74s forwards;
+        }
+        .typing-word { color: var(--accent); font-weight: 500; }
+        .typing-cursor { color: var(--accent); animation: blink 0.85s step-end infinite; }
+
+        /* Botones CTA */
+        .hero-cta {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 14px;
+            opacity: 0;
+            animation: fadeSlideUp 0.65s ease 0.9s forwards;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 13px 28px;
+            background: var(--accent);
+            color: #fff;
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 600;
+            border-radius: 10px;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-primary:hover {
+            background: #228be6;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 28px var(--accent-glow);
+        }
+        .btn-primary:active { transform: translateY(0); }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: transparent;
+            color: var(--text-primary);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-secondary:hover {
+            background: var(--surface);
+            border-color: rgba(255,255,255,0.22);
+            transform: translateY(-2px);
+        }
+
+        /* Indicador de scroll */
+        .scroll-indicator {
+            position: absolute;
+            bottom: 36px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0;
+            animation: fadeIn 0.6s ease 1.4s forwards;
+        }
+        .scroll-indicator span {
+            font-family: var(--font-mono);
+            font-size: 0.65rem;
+            letter-spacing: 0.18em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        .scroll-arrow {
+            width: 18px; height: 18px;
+            border-right: 1.5px solid var(--text-muted);
+            border-bottom: 1.5px solid var(--text-muted);
+            transform: rotate(45deg);
+            animation: scrollBounce 1.6s ease-in-out infinite;
+        }
+
+        /* =====================================================================
+           ABOUT SECTION
+           ===================================================================== */
+        #about {
+            padding: 110px 24px;
+        }
+
+        .about-grid {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 72px;
+            align-items: center;
+        }
+
+        .about-text p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.85;
+            margin-bottom: 18px;
+        }
+        .about-text p strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        /* Tarjetas de info (derecha) */
+        .about-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .info-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: var(--transition);
+        }
+        .info-card:hover {
+            border-color: rgba(10, 132, 255, 0.3);
+            background: rgba(10, 132, 255, 0.04);
+            transform: translateX(4px);
+        }
+
+        .info-card-icon {
+            width: 36px; height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .info-card-content .lbl {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.09em;
+        }
+        .info-card-content .val {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-top: 2px;
+        }
+
+        /* =====================================================================
+           TECH STACK SECTION
+           ===================================================================== */
+        #stack {
+            padding: 90px 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .stack-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .stack-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+        .stack-header .section-subtitle {
+            margin: 0 auto;
+        }
+
+        .stack-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 18px;
+        }
+
+        /* Tarjeta tecnología — el --card-color se define inline en el HTML */
+        .tech-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 36px 24px 28px;
+            text-align: center;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .tech-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% -10%, var(--card-glow, rgba(10,132,255,0.08)) 0%, transparent 65%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .tech-card:hover::before { opacity: 1; }
+        .tech-card:hover {
+            border-color: var(--card-border, rgba(10,132,255,0.45));
+            transform: translateY(-5px);
+            box-shadow: 0 18px 44px rgba(0,0,0,0.32);
+        }
+
+        .tech-logo {
+            width: 64px; height: 64px;
+            margin: 0 auto 20px;
+        }
+        .tech-logo img { width: 100%; height: 100%; object-fit: contain; }
+
+        .tech-name {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+        .tech-desc {
+            font-size: 0.87rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+        .tech-badge {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 500;
+            background: var(--card-badge-bg, rgba(10,132,255,0.1));
+            color: var(--card-badge-text, var(--accent));
+            border: 1px solid var(--card-badge-border, rgba(10,132,255,0.3));
+        }
+
+        /* =====================================================================
+           PROJECTS SECTION
+           ===================================================================== */
+        #projects {
+            padding: 110px 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .projects-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .projects-header {
+            margin-bottom: 64px;
+        }
+
+        /* Grupo por materia */
+        .subject-group {
+            margin-bottom: 64px;
+        }
+
+        .subject-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 24px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+        }
+
+        .period-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 11px;
+            background: var(--accent-soft);
+            border: 1px solid rgba(10, 132, 255, 0.22);
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            font-weight: 500;
+            color: var(--accent);
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        .subject-name {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .subject-gh-link {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            transition: color var(--transition);
+            white-space: nowrap;
+        }
+        .subject-gh-link:hover { color: var(--accent); }
+
+        /* Grid de tarjetas de proyectos */
+        .project-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+        }
+
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 22px 22px 18px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            min-height: 190px;
+        }
+        .project-card:hover {
+            border-color: rgba(10, 132, 255, 0.38);
+            transform: translateY(-3px);
+            box-shadow: 0 14px 36px rgba(0,0,0,0.28);
+        }
+
+        .project-card-top {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        .project-file-icon {
+            width: 34px; height: 34px;
+            background: var(--surface-raised);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .project-name {
+            font-family: var(--font-display);
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.3;
+        }
+
+        .project-desc {
+            font-size: 0.87rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            flex: 1;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        .project-tag {
+            padding: 3px 10px;
+            background: var(--surface-raised);
+            border-radius: 16px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--text-muted);
+        }
+
+        .project-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: auto;
+            padding-top: 10px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 13px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.76rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: var(--transition);
+        }
+        .project-link:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            background: var(--accent-soft);
+        }
+
+        /* Tarjeta placeholder (próximamente) */
+        .project-card.placeholder {
+            border-style: dashed;
+            background: transparent;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            gap: 8px;
+            cursor: default;
+        }
+        .project-card.placeholder:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--text-muted);
+        }
+        .placeholder-plus {
+            width: 38px; height: 38px;
+            border: 1.5px dashed var(--text-muted);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 1.3rem;
+            margin-bottom: 4px;
+        }
+        .placeholder-filename {
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+            color: var(--text-muted);
+        }
+        .placeholder-note {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            opacity: 0.55;
+        }
+
+        /* =====================================================================
+           FOLDER STRUCTURE SECTION
+           ===================================================================== */
+        #structure {
+            padding: 90px 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .structure-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 64px;
+            align-items: start;
+        }
+
+        /* Árbol de archivos estilo VSCode */
+        .vscode-explorer {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            font-family: var(--font-mono);
+        }
+
+        .vscode-titlebar {
+            background: var(--surface-raised);
+            border-bottom: 1px solid var(--border);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .vscode-dots {
+            display: flex;
+            gap: 6px;
+        }
+        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot-r { background: #ff5f56; }
+        .dot-y { background: #febc2e; }
+        .dot-g { background: #28c840; }
+
+        .vscode-tab {
+            font-size: 0.73rem;
+            color: var(--text-muted);
+            margin-left: 4px;
+        }
+
+        .vscode-body {
+            padding: 12px 0;
+            font-size: 0.8rem;
+            line-height: 2.0;
+        }
+
+        .tree-row {
+            padding: 1px 0 1px 16px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: background var(--transition);
+        }
+        .tree-row:hover { background: rgba(255,255,255,0.03); }
+
+        /* Colores VSCode para el explorador */
+        .c-root   { color: var(--text-primary); font-weight: 600; }
+        .c-folder { color: #E5C07B; }  /* Amarillo VSCode - carpetas */
+        .c-html   { color: #E06C75; }  /* Rojo VSCode - HTML */
+        .c-md     { color: #98C379; }  /* Verde VSCode - Markdown */
+        .c-py     { color: #61AFEF; }  /* Azul VSCode - Python */
+        .c-java   { color: #C678DD; }  /* Morado VSCode - Java */
+        .c-sql    { color: #56B6C2; }  /* Cyan VSCode - SQL */
+        .c-arrow  { color: var(--text-muted); margin-right: 2px; }
+        .c-note   { color: var(--text-muted); font-size: 0.7rem; margin-left: 6px; opacity: 0.7; }
+
+        /* Guía de navegación */
+        .structure-guide p {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.75;
+            margin-bottom: 16px;
+        }
+
+        .rule-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--accent);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--accent);
+            margin-bottom: 10px;
+        }
+
+        .example-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 10px 16px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #98C379;
+            margin-bottom: 20px;
+        }
+
+        .guide-steps {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .guide-step {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        .step-num {
+            width: 22px; height: 22px;
+            background: var(--accent-soft);
+            border: 1px solid rgba(10,132,255,0.25);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--accent);
+            flex-shrink: 0;
+            margin-top: 3px;
+        }
+        .step-body {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+        .step-body code {
+            font-family: var(--font-mono);
+            font-size: 0.82em;
+            color: #98C379;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            padding: 1px 6px;
+            border-radius: 4px;
+        }
+
+        /* =====================================================================
+           CONTACT SECTION
+           ===================================================================== */
+        #contact {
+            padding: 110px 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .contact-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            text-align: center;
+        }
+        .contact-inner .section-subtitle {
+            margin: 0 auto 52px;
+        }
+
+        .contact-row {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        /* Tarjeta de contacto */
+        .contact-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            padding: 28px 24px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+            min-width: 150px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, var(--cc-glow, rgba(10,132,255,0.06)) 0%, transparent 70%);
+            opacity: 0;
+            transition: opacity var(--transition);
+        }
+        .contact-card:hover::before { opacity: 1; }
+        .contact-card:hover {
+            border-color: var(--cc-border, rgba(10,132,255,0.45));
+            transform: translateY(-5px);
+            box-shadow: 0 14px 36px rgba(0,0,0,0.22);
+        }
+        .contact-icon {
+            width: 50px; height: 50px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: transform var(--transition);
+        }
+        .contact-card:hover .contact-icon { transform: scale(1.1) rotate(-4deg); }
+
+        .contact-lbl {
+            font-family: var(--font-mono);
+            font-size: 0.67rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .contact-val {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        /* =====================================================================
+           FOOTER
+           ===================================================================== */
+        footer {
+            padding: 28px 24px;
+            border-top: 1px solid var(--border-subtle);
+        }
+        .footer-inner {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .footer-left {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .footer-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+        }
+        .footer-right a {
+            color: var(--accent);
+            transition: color var(--transition);
+        }
+        .footer-right a:hover { color: var(--text-primary); }
+
+        /* =====================================================================
+           KEYFRAMES
+           ===================================================================== */
+        @keyframes fadeSlideUp {
+            from { opacity: 0; transform: translateY(22px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50%       { opacity: 0; }
+        }
+        @keyframes scrollBounce {
+            0%, 100% { transform: rotate(45deg) translate(0, 0); }
+            50%       { transform: rotate(45deg) translate(3px, 3px); }
+        }
+        @keyframes orbFloat {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50%       { transform: translateY(-18px) scale(1.04); }
+        }
+
+        /* =====================================================================
+           RESPONSIVE — TABLET (≤ 860px)
+           ===================================================================== */
+        @media (max-width: 860px) {
+            .nav-links    { display: none; }
+            .nav-gh-btn   { display: none; }
+            .hamburger    { display: flex; }
+
+            .about-grid         { grid-template-columns: 1fr; gap: 40px; }
+            .stack-grid         { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            .project-grid       { grid-template-columns: 1fr; }
+            .structure-inner    { grid-template-columns: 1fr; gap: 40px; }
+            .subject-gh-link    { display: none; }
+        }
+
+        /* =====================================================================
+           RESPONSIVE — MOBILE (≤ 480px)
+           ===================================================================== */
+        @media (max-width: 480px) {
+            #hero { padding: 95px 18px 70px; }
+
+            .hero-cta { flex-direction: column; align-items: flex-start; }
+            .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+
+            .contact-row { flex-direction: column; align-items: center; }
+            .contact-card { width: 100%; max-width: 320px; flex-direction: row; gap: 16px; padding: 18px 20px; }
+            .contact-card:hover { transform: translateX(4px) translateY(0); }
+
+            .footer-inner { flex-direction: column; text-align: center; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- =======================================================================
+         NAVEGACIÓN — Barra fija superior (Apple frosted glass style)
+         ======================================================================= -->
+    <nav id="mainNav">
+        <div class="nav-inner">
+
+            <!-- Logo: < RG /> — estilo JSX, cambia "RG" por tus iniciales si lo deseas -->
+            <a href="#hero" class="nav-logo" aria-label="Inicio">
+                <span class="bracket">&lt;</span>
+                <span class="initials">RG</span>
+                <span class="bracket">&nbsp;/&gt;</span>
+            </a>
+
+            <!-- Links de navegación (desktop) -->
+            <ul class="nav-links" role="navigation" aria-label="Navegación principal">
+                <li><a href="#about">Sobre mí</a></li>
+                <li><a href="#stack">Stack</a></li>
+                <li><a href="#projects">Proyectos</a></li>
+                <li><a href="#structure">Estructura</a></li>
+                <li><a href="#contact">Contacto</a></li>
+            </ul>
+
+            <!-- Botón GitHub en nav (desktop) -->
+            <a href="https://github.com/raulgaray26" target="_blank" rel="noopener noreferrer"
+               class="nav-gh-btn" title="GitHub de Raúl Garay">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                    <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                </svg>
+                GitHub
+            </a>
+
+            <!-- Botón hamburger (solo visible en móvil) -->
+            <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()"
+                 role="button" aria-label="Abrir menú" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Menú móvil overlay -->
+    <ul class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Menú móvil">
+        <li><a href="#about"     onclick="toggleMobileMenu()">Sobre mí</a></li>
+        <li><a href="#stack"     onclick="toggleMobileMenu()">Stack</a></li>
+        <li><a href="#projects"  onclick="toggleMobileMenu()">Proyectos</a></li>
+        <li><a href="#structure" onclick="toggleMobileMenu()">Estructura</a></li>
+        <li><a href="#contact"   onclick="toggleMobileMenu()">Contacto</a></li>
+    </ul>
+
+
+    <!-- =======================================================================
+         HERO SECTION — Presentación principal
+         ======================================================================= -->
+    <section id="hero">
+        <!-- Orbs de luz de fondo (animados, muy sutiles) -->
+        <div class="hero-orb hero-orb-1" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-2" aria-hidden="true"></div>
+        <div class="hero-orb hero-orb-3" aria-hidden="true"></div>
+
+        <div class="hero-inner">
+            <!-- Etiqueta de contexto mono -->
+            <div class="hero-eyebrow" aria-hidden="true">
+                portafolio académico &nbsp;·&nbsp; UEES 2026&#8209;1
+            </div>
+
+            <!-- Nombre: fuente Syne, gradient sutil -->
+            <h1 class="hero-name">Raúl Garay</h1>
+
+            <!-- Título profesional -->
+            <p class="hero-title">Estudiante de Ingeniería en Computación &mdash; UEES</p>
+
+            <!-- Tagline con efecto de escritura -->
+            <div class="hero-tagline">
+                <span>&gt; apasionado de</span>
+                <span class="typing-word" id="typingWord"></span><span class="typing-cursor" aria-hidden="true">|</span>
+            </div>
+
+            <!-- Botones CTA -->
+            <div class="hero-cta">
+                <a href="#projects" class="btn-primary">
+                    <!-- Ícono carpeta -->
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                         stroke="currentColor" stroke-width="2.5"
+                         stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    Ver Proyectos
+                </a>
+
+                <a href="https://github.com/raulgaray26/raulgaray26.github.io"
+                   target="_blank" rel="noopener noreferrer" class="btn-secondary">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                    Portafolio
+                </a>
+            </div>
+        </div>
+
+        <!-- Indicador de scroll -->
+        <div class="scroll-indicator" aria-hidden="true">
+            <span>scroll</span>
+            <div class="scroll-arrow"></div>
+        </div>
+    </section>
+
+
+    <!-- =======================================================================
+         ABOUT SECTION — Sobre mí
+         ======================================================================= -->
+    <section id="about">
+        <div class="about-grid">
+
+            <!-- Texto "Sobre mí" -->
+            <div class="about-text reveal">
+                <span class="section-tag">// about me</span>
+                <h2 class="section-title">¿Quién soy?</h2>
+                <p>
+                    Soy <strong>Raúl Alejandro Garay Vinueza</strong>, estudiante de Ingeniería en
+                    Computación en la Universidad de Especialidades Espíritu Santo (UEES). Desde niño,
+                    la tecnología, los videojuegos y el impulso de entender cómo funcionan las cosas
+                    era lo que me gustaba, si algo podía mejorarse, ahí estaba mi curiosidad.
+                </p>
+                <p>
+                    Hoy eso mismo, me orienta hacia el <strong>diseño de sistemas</strong>, la
+                    <strong>arquitectura de software</strong> y el desarrollo de soluciones bien
+                    estructuradas para problemas complejos. Pienso más allá del código
+                    inmediato: en los sistemas escalables, limpios y mantenibles que perduran.
+                </p>
+            </div>
+
+            <!-- Tarjetas de información (derecha) -->
+            <div class="about-cards reveal-stagger">
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <!-- Ícono universidad -->
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                             stroke="#0a84ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+                            <polyline points="9 22 9 12 15 12 15 22"/>
+                        </svg>
+                    </div>
+                    <div class="info-card-content">
+                        <div class="lbl">Universidad</div>
+                        <div class="val">UEES — Guayaquil, Ecuador</div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <!-- Ícono carrera -->
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                             stroke="#30d158" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <line x1="8" y1="21" x2="16" y2="21"/>
+                            <line x1="12" y1="17" x2="12" y2="21"/>
+                        </svg>
+                    </div>
+                    <div class="info-card-content">
+                        <div class="lbl">Carrera</div>
+                        <div class="val">Ingeniería en Computación</div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <!-- Ícono enfoque -->
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                             stroke="#ff9f0a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                        </svg>
+                    </div>
+                    <div class="info-card-content">
+                        <div class="lbl">Enfoque</div>
+                        <div class="val">Arquitectura · Sistemas · Backend</div>
+                    </div>
+                </div>
+
+                <div class="info-card">
+                    <div class="info-card-icon">
+                        <!-- Ícono periodo -->
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                             stroke="#bf5af2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="4" width="18" height="18" rx="2"/>
+                            <line x1="16" y1="2" x2="16" y2="6"/>
+                            <line x1="8" y1="2" x2="8" y2="6"/>
+                            <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                    </div>
+                    <div class="info-card-content">
+                        <div class="lbl">Periodo Actual</div>
+                        <div class="val">2026 — Quinto Semestre</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =======================================================================
+         TECH STACK SECTION — Herramientas principales
+         Para agregar una tecnología nueva: duplica un bloque .tech-card y
+         cambia el --card-* CSS, el logo (img src) y el contenido de texto.
+         ======================================================================= -->
+    <section id="stack">
+        <div class="stack-inner">
+            <div class="stack-header reveal">
+                <span class="section-tag">// herramientas</span>
+                <h2 class="section-title">Stack Tecnológico</h2>
+                <p class="section-subtitle">
+                    Mis lenguajes y herramientas principales para diseñar e implementar soluciones de software estructuradas.
+                </p>
+            </div>
+
+            <div class="stack-grid reveal-stagger">
+
+                <!-- =====================
+                     TECH CARD: PYTHON
+                     Color oficial: #3776AB (azul) / #FFD43B (amarillo)
+                     ===================== -->
+                <div class="tech-card"
+                     style="--card-glow: rgba(55,118,171,0.10);
+                            --card-border: rgba(55,118,171,0.50);
+                            --card-badge-bg: rgba(55,118,171,0.10);
+                            --card-badge-text: #4d9de0;
+                            --card-badge-border: rgba(55,118,171,0.35);">
+                    <div class="tech-logo">
+                        <!-- Logo Python oficial (colores azul/amarillo) desde DevIcon CDN -->
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg"
+                             alt="Python Logo" loading="lazy">
+                    </div>
+                    <div class="tech-name">Python</div>
+                    <p class="tech-desc">
+                        Lenguaje principal para scripting, algoritmos y desarrollo backend.
+                        Limpio, versátil y con un ecosistema enorme.
+                    </p>
+                    <span class="tech-badge">Lenguaje Principal</span>
+                </div>
+
+                <!-- =====================
+                     TECH CARD: JAVA
+                     Color oficial: #ED8B00 (naranja)
+                     ===================== -->
+                <div class="tech-card"
+                     style="--card-glow: rgba(237,139,0,0.09);
+                            --card-border: rgba(237,139,0,0.50);
+                            --card-badge-bg: rgba(237,139,0,0.10);
+                            --card-badge-text: #e8a838;
+                            --card-badge-border: rgba(237,139,0,0.35);">
+                    <div class="tech-logo">
+                        <!-- Logo Java oficial (taza naranja) desde DevIcon CDN -->
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/java/java-original.svg"
+                             alt="Java Logo" loading="lazy">
+                    </div>
+                    <div class="tech-name">Java</div>
+                    <p class="tech-desc">
+                        Para diseño orientado a objetos, patrones de diseño y sistemas
+                        empresariales con tipado fuerte y alto rendimiento.
+                    </p>
+                    <span class="tech-badge">OOP & Sistemas</span>
+                </div>
+
+                <!-- =====================
+                     TECH CARD: POSTGRESQL
+                     Color oficial: #336791 (azul elefante)
+                     ===================== -->
+                <div class="tech-card"
+                     style="--card-glow: rgba(51,103,145,0.10);
+                            --card-border: rgba(51,103,145,0.50);
+                            --card-badge-bg: rgba(51,103,145,0.10);
+                            --card-badge-text: #5b9ec9;
+                            --card-badge-border: rgba(51,103,145,0.35);">
+                    <div class="tech-logo">
+                        <!-- Logo PostgreSQL oficial (elefante azul) desde DevIcon CDN -->
+                        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg"
+                             alt="PostgreSQL Logo" loading="lazy">
+                    </div>
+                    <div class="tech-name">PostgreSQL</div>
+                    <p class="tech-desc">
+                        Base de datos relacional para diseño de esquemas, consultas
+                        complejas y persistencia de datos bien estructurada.
+                    </p>
+                    <span class="tech-badge">Bases de Datos</span>
+                </div>
+
+                <!-- =====================================================================
+                     AGREGAR NUEVA TECNOLOGÍA:
+                     Copia un bloque .tech-card de arriba, cambia:
+                       1. --card-glow/border/badge-* con el color oficial de la tech
+                       2. <img src="..."> con la URL de DevIcon (reemplaza "python/python-original")
+                       3. tech-name, tech-desc y el texto del tech-badge
+                     URL DevIcon: https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/
+                                  [nombre]/[nombre]-original.svg
+                     ===================================================================== -->
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- =======================================================================
+         PROJECTS SECTION — Índice académico agrupado por materia
+         
+         CÓMO AGREGAR UN PROYECTO REAL (cuando tengas código):
+         1. Dentro del .project-grid correspondiente, reemplaza o añade un
+            .project-card (ve la PLANTILLA comentada dentro del primer grupo).
+         2. Cambia el nombre, descripción, tecnologías y el href del botón.
+         
+         CÓMO AGREGAR UNA NUEVA MATERIA:
+         1. Duplica un bloque .subject-group completo al final.
+         2. Cambia el texto del .period-badge, .subject-name y el href del
+            .subject-gh-link por la URL de tu nueva carpeta en GitHub.
+         3. Agrega/reemplaza los .project-card dentro del .project-grid.
+         ======================================================================= -->
+    <section id="projects">
+        <div class="projects-inner">
+
+            <div class="projects-header reveal">
+                <span class="section-tag">// índice académico</span>
+                <h2 class="section-title">Proyectos Académicos</h2>
+                <p class="section-subtitle">
+                    Trabajo organizado por materia, siguiendo la nomenclatura oficial de carpetas del repositorio.
+                </p>
+            </div>
+
+            <!-- ==================================================================
+                 MATERIA 1: 2026 - 1 - Lenguajes de Programación
+                 CARPETA REAL EN REPO: /2026 - 1 - Lenguajes de Programación
+                 ================================================================== -->
+            <div class="subject-group reveal">
+                <div class="subject-header">
+                    <span class="period-badge">
+                        <!-- Punto de estado activo -->
+                        <span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;"></span>
+                        2026 — 1
+                    </span>
+                    <h3 class="subject-name">Lenguajes de Programación</h3>
+                    <a href="https://github.com/raulgaray26/raulgaray26.github.io/tree/main/2026%20-%201%20-%20Lenguajes%20de%20Programaci%C3%B3n"
+                       target="_blank" rel="noopener noreferrer" class="subject-gh-link">
+                        Ver en GitHub
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2.5"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="project-grid">
+
+                    <!-- ============================================================
+                         PLANTILLA DE PROYECTO (descomenta y rellena cuando lo tengas)
+                         
+                         <div class="project-card">
+                             <div class="project-card-top">
+                                 <div class="project-file-icon">
+                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+                                          stroke="#61AFEF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                         <polyline points="16 18 22 12 16 6"/>
+                                         <polyline points="8 6 2 12 8 18"/>
+                                     </svg>
+                                 </div>
+                                 <div class="project-name">[[Nombre del Proyecto]]</div>
+                             </div>
+                             <p class="project-desc">
+                                 [[Descripción breve: qué hace, qué problema resuelve, enfoque principal.]]
+                             </p>
+                             <div class="project-tags">
+                                 <span class="project-tag">Python</span>
+                                 <span class="project-tag">[[Otra tech]]</span>
+                             </div>
+                             <div class="project-footer">
+                                 <a href="[[URL_DEL_REPO_O_SUBCARPETA]]"
+                                    target="_blank" rel="noopener noreferrer"
+                                    class="project-link">
+                                     <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
+                                         <path d="M12 .297c-6.63 0-12 5.373-12 12..."/>
+                                     </svg>
+                                     Ver Repositorio
+                                 </a>
+                             </div>
+                         </div>
+                         ============================================================ -->
+
+                    <!-- Placeholder hasta agregar proyectos reales -->
+                    <div class="project-card placeholder">
+                        <div class="placeholder-plus">+</div>
+                        <div class="placeholder-filename">// proyecto_01.py</div>
+                        <div class="placeholder-note">— próximamente —</div>
+                    </div>
+
+                    <div class="project-card placeholder">
+                        <div class="placeholder-plus">+</div>
+                        <div class="placeholder-filename">// proyecto_02.py</div>
+                        <div class="placeholder-note">— próximamente —</div>
+                    </div>
+
+                </div>
+            </div><!-- /subject-group Lenguajes de Programación -->
+
+
+            <!-- ==================================================================
+                 MATERIA 2: 2026 - 1 - Diseño de Software
+                 CARPETA EN REPO: /2026 - 1 - Diseño de Software
+                 EDITAR: Crea la carpeta en GitHub y actualiza el href debajo.
+                 ================================================================== -->
+            <div class="subject-group reveal">
+                <div class="subject-header">
+                    <span class="period-badge">
+                        <span style="width:6px;height:6px;background:var(--orange);border-radius:50%;display:inline-block;"></span>
+                        2026 — 1
+                    </span>
+                    <h3 class="subject-name">Diseño de Software</h3>
+                    <!-- EDITAR: Reemplaza # cuando crees la carpeta en tu repositorio -->
+                    <a href="https://github.com/raulgaray26/raulgaray26.github.io/tree/main/2026%20-%201%20-%20Dise%C3%B1o%20de%20Software"
+                       target="_blank" rel="noopener noreferrer" class="subject-gh-link">
+                        Ver en GitHub
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2.5"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="project-grid">
+                    <div class="project-card placeholder">
+                        <div class="placeholder-plus">+</div>
+                        <div class="placeholder-filename">// proyecto_01.java</div>
+                        <div class="placeholder-note">— próximamente —</div>
+                    </div>
+                    <div class="project-card placeholder">
+                        <div class="placeholder-plus">+</div>
+                        <div class="placeholder-filename">// UML_diagrams/</div>
+                        <div class="placeholder-note">— próximamente —</div>
+                    </div>
+                </div>
+            </div><!-- /subject-group Diseño de Software -->
+
+
+            <!-- ==================================================================
+                 MATERIA 3: 2026 - 1 - Sistemas Distribuidos
+                 CARPETA EN REPO: /2026 - 1 - Sistemas Distribuidos
+                 EDITAR: Crea la carpeta en GitHub y actualiza el href debajo.
+                 ================================================================== -->
+            <div class="subject-group reveal">
+                <div class="subject-header">
+                    <span class="period-badge">
+                        <span style="width:6px;height:6px;background:var(--purple);border-radius:50%;display:inline-block;"></span>
+                        2026 — 1
+                    </span>
+                    <h3 class="subject-name">Sistemas Distribuidos</h3>
+                    <!-- EDITAR: Reemplaza # cuando crees la carpeta en tu repositorio -->
+                    <a href="https://github.com/raulgaray26/raulgaray26.github.io/tree/main/2026%20-%201%20-%20Sistemas%20Distribuidos"
+                       target="_blank" rel="noopener noreferrer" class="subject-gh-link">
+                        Ver en GitHub
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2.5"
+                             stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+                            <polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                        </svg>
+                    </a>
+                </div>
+
+                <div class="project-grid">
+                    <div class="project-card placeholder">
+                        <div class="placeholder-plus">+</div>
+                        <div class="placeholder-filename">// proyecto_01.py</div>
+                        <div class="placeholder-note">— próximamente —</div>
+                    </div>
+                    <div class="project-card placeholder">
+                        <div class="placeholder-plus">+</div>
+                        <div class="placeholder-filename">// schema.sql</div>
+                        <div class="placeholder-note">— próximamente —</div>
+                    </div>
+                </div>
+            </div><!-- /subject-group Sistemas Distribuidos -->
+
+
+            <!-- ==================================================================
+                 NUEVA MATERIA (TEMPLATE — duplica este bloque para agregar materias):
+                 
+                 <div class="subject-group reveal">
+                     <div class="subject-header">
+                         <span class="period-badge">
+                             <span style="width:6px;height:6px;background:var(--green);border-radius:50%;display:inline-block;"></span>
+                             [[AÑO]] — [[PERIODO]]
+                         </span>
+                         <h3 class="subject-name">[[Nombre de la Materia]]</h3>
+                         <a href="[[URL_CARPETA_GITHUB]]" target="_blank" rel="noopener noreferrer" class="subject-gh-link">
+                             Ver en GitHub ↗
+                         </a>
+                     </div>
+                     <div class="project-grid">
+                         [[ tarjetas de proyecto o placeholders ]]
+                     </div>
+                 </div>
+                 ================================================================== -->
+
+        </div>
+    </section>
+
+
+    <!-- =======================================================================
+         FOLDER STRUCTURE SECTION — Guía de navegación del repositorio
+         ======================================================================= -->
+    <section id="structure">
+        <div class="structure-inner">
+
+            <!-- Árbol de archivos estilo VS Code Explorer -->
+            <div class="reveal">
+                <div class="vscode-explorer" role="img" aria-label="Estructura de carpetas del repositorio">
+                    <div class="vscode-titlebar">
+                        <div class="vscode-dots" aria-hidden="true">
+                            <span class="dot dot-r"></span>
+                            <span class="dot dot-y"></span>
+                            <span class="dot dot-g"></span>
+                        </div>
+                        <span class="vscode-tab">EXPLORER — raulgaray26.github.io</span>
+                    </div>
+                    <div class="vscode-body">
+                        <!-- Raíz -->
+                        <div class="tree-row">
+                            <span class="c-folder">▼</span>
+                            <span class="c-root">raulgaray26.github.io</span>
+                        </div>
+                        <!-- index.html -->
+                        <div class="tree-row" style="padding-left: 28px;">
+                            <span class="c-arrow">│&nbsp;&nbsp;├─</span>
+                            <span class="c-html">index.html</span>
+                            <span class="c-note">← esta página</span>
+                        </div>
+                        <!-- README.md raíz -->
+                        <div class="tree-row" style="padding-left: 28px;">
+                            <span class="c-arrow">│&nbsp;&nbsp;├─</span>
+                            <span class="c-md">README.md</span>
+                        </div>
+                        <!-- Carpeta Lenguajes de Programación (existe en el repo) -->
+                        <div class="tree-row" style="padding-left: 28px;">
+                            <span class="c-arrow">│&nbsp;&nbsp;├─</span>
+                            <span class="c-folder">▼ 2026 - 1 - Lenguajes de Programación</span>
+                        </div>
+                        <div class="tree-row" style="padding-left: 56px;">
+                            <span class="c-arrow">│&nbsp;&nbsp;&nbsp;&nbsp;├─</span>
+                            <span class="c-md">README.md</span>
+                        </div>
+                        <div class="tree-row" style="padding-left: 56px;">
+                            <span class="c-arrow">│&nbsp;&nbsp;&nbsp;&nbsp;└─</span>
+                            <span class="c-folder">▶ proyecto-01/</span>
+                        </div>
+                        <!-- Carpeta Diseño de Software (por crear) -->
+                        <div class="tree-row" style="padding-left: 28px; opacity:0.6;">
+                            <span class="c-arrow">│&nbsp;&nbsp;├─</span>
+                            <span class="c-folder">▶ 2026 - 1 - Diseño de Software</span>
+                            <span class="c-note">← pendiente</span>
+                        </div>
+                        <!-- Carpeta Sistemas Distribuidos (por crear) -->
+                        <div class="tree-row" style="padding-left: 28px; opacity:0.6;">
+                            <span class="c-arrow">│&nbsp;&nbsp;├─</span>
+                            <span class="c-folder">▶ 2026 - 1 - Sistemas Distribuidos</span>
+                            <span class="c-note">← pendiente</span>
+                        </div>
+                        <!-- Futura carpeta (placeholder genérico) -->
+                        <div class="tree-row" style="padding-left: 28px; opacity:0.35;">
+                            <span class="c-arrow">│&nbsp;&nbsp;└─</span>
+                            <span class="c-folder" style="font-style:italic;">▶ [Periodo - Materia]/</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Guía textual de navegación -->
+            <div class="structure-guide reveal">
+                <span class="section-tag">// cómo navegar</span>
+                <h2 class="section-title">Estructura del Repositorio</h2>
+                <p>
+                    Cada materia tiene su propia carpeta en la raíz del repositorio, siguiendo
+                    una nomenclatura consistente que facilita la navegación y la evaluación académica.
+                </p>
+
+                <div class="rule-box">
+                    📂 &nbsp;[AÑO] - [PERIODO] - [Nombre de Materia]
+                </div>
+
+                <div class="example-box">
+                    ✓ &nbsp;2026 - 1 - Lenguajes de Programación<br>
+                    ✓ &nbsp;2026 - 1 - Diseño de Software<br>
+                    ✓ &nbsp;2026 - 2 - Bases de Datos Avanzadas
+                </div>
+
+                <ul class="guide-steps">
+                    <li class="guide-step">
+                        <div class="step-num">1</div>
+                        <div class="step-body">
+                            Entra al <a href="https://github.com/raulgaray26/raulgaray26.github.io"
+                            target="_blank" rel="noopener" style="color:var(--accent);">repositorio en GitHub</a>
+                            o presiona el botón "Ver en GitHub" de cada materia en esta página.
+                        </div>
+                    </li>
+                    <li class="guide-step">
+                        <div class="step-num">2</div>
+                        <div class="step-body">
+                            Selecciona la carpeta de la materia que te interesa — el nombre indica
+                            el año, periodo y asignatura de forma directa.
+                        </div>
+                    </li>
+                    <li class="guide-step">
+                        <div class="step-num">3</div>
+                        <div class="step-body">
+                            Cada carpeta contiene un <code>README.md</code> con descripción general
+                            y subcarpetas para cada proyecto individual.
+                        </div>
+                    </li>
+                    <li class="guide-step">
+                        <div class="step-num">4</div>
+                        <div class="step-body">
+                            Dentro de cada proyecto encontrarás el código fuente, instrucciones
+                            de ejecución y documentación técnica.
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </section>
+
+
+    <!-- =======================================================================
+         CONTACT SECTION — Formas de contacto
+         ======================================================================= -->
+    <section id="contact">
+        <div class="contact-inner">
+            <span class="section-tag">// hablemos</span>
+            <h2 class="section-title">Contacto</h2>
+            <p class="section-subtitle">
+                ¿Quieres saber más sobre mis proyectos o simplemente conectar? Aquí me encuentras.
+            </p>
+
+            <div class="contact-row reveal-stagger">
+
+                <!-- CONTACTO: GITHUB -->
+                <a href="https://github.com/raulgaray26"
+                   target="_blank" rel="noopener noreferrer"
+                   class="contact-card"
+                   style="--cc-glow: rgba(240,246,252,0.05); --cc-border: rgba(240,246,252,0.35);"
+                   title="Perfil de GitHub">
+                    <div class="contact-icon" style="background: #24292e; border: 1px solid #3d444d;">
+                        <!-- GitHub mark — blanco sobre oscuro para fondo dark -->
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="#ffffff" aria-hidden="true">
+                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                        </svg>
+                    </div>
+                    <div class="contact-lbl">GitHub</div>
+                    <div class="contact-val">@raulgaray26</div>
+                </a>
+
+                <!-- CONTACTO: CORREO INSTITUCIONAL -->
+                <a href="mailto:raulgaray@uees.edu.ec"
+                   class="contact-card"
+                   style="--cc-glow: rgba(10,132,255,0.07); --cc-border: rgba(10,132,255,0.40);"
+                   title="Correo institucional UEES">
+                    <div class="contact-icon" style="background: #0a2540; border: 1px solid rgba(10,132,255,0.3);">
+                        <!-- Ícono email — azul Apple -->
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                             stroke="#0a84ff" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                            <polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                    </div>
+                    <div class="contact-lbl">Correo</div>
+                    <div class="contact-val">raulgaray@uees.edu.ec</div>
+                </a>
+
+                <!-- CONTACTO: TELÉFONO -->
+                <a href="tel:+593978827749"
+                   class="contact-card"
+                   style="--cc-glow: rgba(48,209,88,0.06); --cc-border: rgba(48,209,88,0.40);"
+                   title="Teléfono">
+                    <div class="contact-icon" style="background: #0a1f10; border: 1px solid rgba(48,209,88,0.25);">
+                        <!-- Ícono teléfono — verde Apple -->
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="none"
+                             stroke="#30d158" stroke-width="2"
+                             stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.38 2 2 0 0 1 3.59 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.56a16 16 0 0 0 5.53 5.53l.91-.91a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                    </div>
+                    <div class="contact-lbl">Teléfono</div>
+                    <div class="contact-val">+593 97 882 7749</div>
+                </a>
+
+                <!-- CONTACTO: LINKEDIN -->
+                <a href="https://www.linkedin.com/in/ra%C3%BAl-garay-vinueza-110207409/"
+                   target="_blank" rel="noopener noreferrer"
+                   class="contact-card"
+                   style="--cc-glow: rgba(10,102,194,0.08); --cc-border: rgba(10,102,194,0.45);"
+                   title="LinkedIn"
+                   onclick="if(this.href==='#'){event.preventDefault();}">
+                    <div class="contact-icon" style="background: #0a1628; border: 1px solid rgba(10,102,194,0.35);">
+                        <!-- LinkedIn logo — azul oficial -->
+                        <svg width="26" height="26" viewBox="0 0 24 24" fill="#0a66c2" aria-hidden="true">
+                            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                        </svg>
+                    </div>
+                    <div class="contact-lbl">LinkedIn</div>
+                    <div class="contact-val">Raúl Garay Vinueza</div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+
+    <!-- =======================================================================
+         FOOTER
+         ======================================================================= -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-left">
+                <span style="color:var(--accent);">&lt;RG /&gt;</span>
+                &nbsp;·&nbsp; © 2026 Raúl Alejandro Garay Vinueza &nbsp;·&nbsp; UEES
+            </div>
+            <div class="footer-right">
+                Hosted en&nbsp;
+                <a href="https://pages.github.com" target="_blank" rel="noopener">GitHub Pages</a>
+                &nbsp;·&nbsp;
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="#ff453a" aria-hidden="true">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                </svg>
+                &nbsp;con código limpio
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- =======================================================================
+         JAVASCRIPT
+         Secciones:
+           1. Efecto de escritura (typing) en el Hero
+           2. Scroll Reveal con IntersectionObserver
+           3. Toggle del menú móvil
+           4. Highlight de sección activa en la nav
+           5. Sombra/borde de la nav al hacer scroll
+         ======================================================================= -->
+    <script>
+        // =====================================================================
+        // 1. EFECTO DE ESCRITURA — Typing effect en el tagline del Hero
+        //    Edita el array `phrases` para cambiar las palabras que aparecen.
+        // =====================================================================
+        const phrases = [
+            'diseño de sistemas',
+            'arquitectura de software',
+            'resolución de problemas',
+            'videojuegos & tecnología',
+            'código bien estructurado',
+            'soluciones escalables'
+        ];
+
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isErasing = false;
+        const typingEl = document.getElementById('typingWord');
+
+        function runTyping() {
+            const current = phrases[phraseIndex];
+
+            if (!isErasing) {
+                // Escribir
+                typingEl.textContent = current.slice(0, charIndex + 1);
+                charIndex++;
+                if (charIndex === current.length) {
+                    // Pausa antes de borrar
+                    setTimeout(() => { isErasing = true; runTyping(); }, 2000);
+                    return;
+                }
+            } else {
+                // Borrar
+                typingEl.textContent = current.slice(0, charIndex - 1);
+                charIndex--;
+                if (charIndex === 0) {
+                    isErasing = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                }
+            }
+
+            setTimeout(runTyping, isErasing ? 45 : 80);
+        }
+
+        // Inicia después de que las animaciones CSS del hero se completen
+        setTimeout(runTyping, 1100);
+
+
+        // =====================================================================
+        // 2. SCROLL REVEAL — IntersectionObserver
+        //    Observa elementos con .reveal y .reveal-stagger y les agrega
+        //    la clase .visible cuando entran al viewport.
+        // =====================================================================
+        const revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        revealObserver.unobserve(entry.target); // Solo una vez
+                    }
+                });
+            },
+            { threshold: 0.10, rootMargin: '0px 0px -50px 0px' }
+        );
+
+        document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
+            revealObserver.observe(el);
+        });
+
+
+        // =====================================================================
+        // 3. MENÚ MÓVIL — Toggle hamburger / menú overlay
+        // =====================================================================
+        function toggleMobileMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const menu      = document.getElementById('mobileMenu');
+            const isOpen    = menu.classList.toggle('open');
+
+            hamburger.classList.toggle('open', isOpen);
+            hamburger.setAttribute('aria-expanded', isOpen);
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+        }
+
+        // Cerrar menú al hacer clic fuera del área de navegación
+        document.getElementById('mobileMenu').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) toggleMobileMenu();
+        });
+
+
+        // =====================================================================
+        // 4. NAV ACTIVE LINK — Resalta el link de nav de la sección visible
+        // =====================================================================
+        const sections  = document.querySelectorAll('section[id]');
+        const navLinks  = document.querySelectorAll('.nav-links a');
+
+        const navObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    const id = entry.target.id;
+                    navLinks.forEach(link => {
+                        const active = link.getAttribute('href') === `#${id}`;
+                        link.style.color = active ? 'var(--text-primary)' : '';
+                        link.classList.toggle('active', active);
+                    });
+                });
+            },
+            { threshold: 0.45 }
+        );
+
+        sections.forEach(s => navObserver.observe(s));
+
+
+        // =====================================================================
+        // 5. NAV SCROLL BORDER — Sombra/borde más visible al hacer scroll
+        // =====================================================================
+        const navEl = document.getElementById('mainNav');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                navEl.style.borderBottomColor = 'rgba(255,255,255,0.09)';
+                navEl.style.boxShadow = '0 1px 0 rgba(255,255,255,0.04)';
+            } else {
+                navEl.style.borderBottomColor = 'rgba(255,255,255,0.04)';
+                navEl.style.boxShadow = 'none';
+            }
+        }, { passive: true });
+
+    </script>
+
+</body>
+</html>

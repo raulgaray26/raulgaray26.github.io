@@ -1,2 +1,17 @@
-## Índice de Proyectos
-* [Proyecto 01 - Tema](https://uees.edu.ec/postgrado/?utm_source=Pmax&utm_medium=anuncios+de+pmax&utm_campaign=maestr%C3%ADas+presenciales&utm_id=UEES&gad_source=1&gad_campaignid=22327197795&gbraid=0AAAAACRBD3LCdwYVVDNYDwNazQm1eVNew&gclid=Cj0KCQjw8PDPBhCeARIsAOJwmWUTs-FbDcmQRB30_NS7EcWAgXrRCuF0viwwJPnmSdASrqabmvUMUQIaArSHEALw_wcB)
+# 2026 - 1 - Lenguajes de Programación
+
+Bienvenido a la carpeta de la materia **Lenguajes de Programación** (Periodo 2026 - 1). 
+
+En este espacio se documentan y listan todos los proyectos académicos desarrollados durante el curso. Cada proyecto documentado a continuación se encuentra alojado en su propio repositorio independiente.
+
+## Proyectos del Curso
+
+*Actualmente en desarrollo. Los proyectos se irán enlazando conforme se completen durante el semestre.*
+
+### 1. [Nombre del Proyecto 01 - Próximamente]
+* **Descripción:** Breve resumen de lo que hará el proyecto.
+* **Estado:** En desarrollo
+* **Repositorio Oficial:** `[Enlace al repositorio externo se colocará aquí]`
+
+---
+[Volver al Portafolio Principal](https://github.com/raulgaray26/raulgaray26.github.io)

@@ -1,6 +1,6 @@
-# 2026 - 1 - Lenguajes de Programación
+# 2026 - 1 - Análisis de Algoritmos
 
-Bienvenido a la carpeta de la materia **Lenguajes de Programación** (Periodo 2026 - 1). 
+Bienvenido a la carpeta de la materia **Análisis de Algoritmos** (Periodo 2026 - 1). 
 
 En este espacio se documentan y listan todos los proyectos académicos desarrollados durante el curso. Cada proyecto documentado a continuación se encuentra alojado en su propio repositorio independiente.
 

@@ -13,5 +13,10 @@ En este espacio se documentan y listan todos los proyectos académicos desarroll
 * **Estado:** Finalizado
 * **Repositorio Oficial:** [Link](https://github.com/raulgaray26/prolog-game)
 
+### 2. [StadiumHub 02 - Finalizado]
+* **Descripción:** Sistema de Mantenimiento de Estadios - FIFA 2026. Plataforma web desarrollada en Laravel (PHP, Blade, Bootstrap) para la gestión integral de las sedes mundialistas. Mediante un sistema de acceso unificado, conecta y agiliza el flujo de trabajo de tres roles clave: el Comité Agronómico (administración global de estadios), los Jefes de Mantenimiento (asignación de tareas) y los Técnicos de Campo (ejecución de labores), garantizando el estado óptimo de cada recinto.
+* **Estado:** Finalizado
+* **Repositorio Oficial:** [Link](https://github.com/raulgaray26/StadiumHub)
+
 ---
 [Volver al Portafolio Principal](https://github.com/raulgaray26/raulgaray26.github.io)

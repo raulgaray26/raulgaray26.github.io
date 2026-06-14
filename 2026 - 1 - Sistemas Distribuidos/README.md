@@ -8,10 +8,10 @@ En este espacio se documentan y listan todos los proyectos académicos desarroll
 
 *Actualmente en desarrollo. Los proyectos se irán enlazando conforme se completen durante el semestre.*
 
-### 1. [Nombre del Proyecto 01 - Próximamente]
-* **Descripción:** Breve resumen de lo que hará el proyecto.
-* **Estado:** En desarrollo
-* **Repositorio Oficial:** `[Enlace al repositorio externo se colocará aquí]`
+### 1. [Sistema de Inventario 01 - Finalizado]
+* **Descripción:** Sistema de inventario de productos distribuido en contenedores Docker, donde cada componente se ejecuta en máquinas físicas diferentes y se comunican entre sí a través de una red privada virtual usando Tailscale. El objetivo es que experimenten de forma práctica los conceptos de contenerización, comunicación entre servicios distribuidos y persistencia de datos.
+* **Estado:** Finalizado
+* **Repositorio Oficial:** [Link](https://github.com/raulgaray26/Inventario-Distribuido-Docker-Tailscale)
 
 ---
 [Volver al Portafolio Principal](https://github.com/raulgaray26/raulgaray26.github.io)
